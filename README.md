@@ -3,19 +3,24 @@
 - [Introduction](#introduction)
     - [Problem with traditional file systems:](#problem-with-traditional-file-systems)
     - [Most Common Types of DBMS:](#most-common-types-of-dbms)
+    - [DBMS Architecture:](#dbms-architecture)
 
 # Introduction
-A Database Management System (DBMS) is a software system that allows us to manage data through databases. It acts as an bridge between the database and users or applications.
+A Database Management System (DBMS) is a software system that allows us to manage data through databases. It acts as a bridge between the database and users or applications.
+
+Note: 
+- Data: Raw, unprocessed facts: 85, 90, 88, 92, 87
+- Information: Processed data: Calculate the average temperature: sum of data / 5 = 88.4 (Information)
+- Database: Organized collection of data
 
 ### Problem with traditional file systems:
 Before the introduction of modern DBMS, data was managed using basic file systems on hard drives. While this approach allowed us to manage files as needed, but it came with numerous challenges such as: 
-- Data Redundancy: Same data stored in multiple places
-- Inconsistency: Different versions of the same data
-- Difficult Access: Manual file search required
-- Poor Security: No control over data access
-- Single-User Access: No support for collaboration
-- No Backup/Recovery: Data loss was often permanent
-
+- Data Redundancy and inconsistency
+- Difficult in Accessing the data
+- Poor Security
+- No support for collaboration
+- No Backup/Recovery
+  
 ### Most Common Types of DBMS: 
 
 1. Relational Database Management System (RDBMS):
@@ -25,3 +30,15 @@ Before the introduction of modern DBMS, data was managed using basic file system
 2. Non-Relational Database Management System (NoSQL DBMS):
    - Data is stored in a non-tabular(unstructured, flexible) format (key-value pairs, JSON-like documents, graphs etc).
    - Examples: MongoDB, Redis, Amazon DynamoDB etc.
+
+### DBMS Architecture: 
+- 1-Tier Architecture: Client and database are part of the same local system.
+  - client + database
+  - Example: MS Excel, SQLite, MS Access 
+  
+- 2-Tier Architecture: Client and database are on separate systems.
+  - client --> database
+  - Example: Desktop app → MySQL / SQL Server
+
+- 3-Tier Architecture: The client communicates with an server, which then communicates with the database.
+  - client --> server --> database
