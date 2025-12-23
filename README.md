@@ -4,6 +4,7 @@
     - [Problem with traditional file systems:](#problem-with-traditional-file-systems)
     - [Most Common Types of DBMS:](#most-common-types-of-dbms)
     - [DBMS Architecture:](#dbms-architecture)
+    - [Schemas and Instance:](#schemas-and-instance)
 
 # Introduction
 A Database Management System (DBMS) is a software system that allows us to manage data through databases. It acts as a bridge between the database and users or applications.
@@ -42,3 +43,14 @@ Before the introduction of modern DBMS, data was managed using basic file system
 
 - 3-Tier Architecture: The client communicates with an server, which then communicates with the database.
   - client --> server --> database
+  
+### Schemas and Instance:
+
+**Schemas** is the logical structure or blueprint of the database that defines tables, attributes, relationships, constraints etc. It changes rarely. 
+
+Example: Table Student (id, name, dept)
+
+**Instance** is the actual data stored in the database according to the schemas at a specific time. It changes frequently.
+
+Example: (1, 'Alice', 'CS'), (2, 'Bob', 'EE')
+
