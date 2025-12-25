@@ -20,6 +20,12 @@
       - [Alternate key:](#alternate-key)
       - [Composite key:](#composite-key)
       - [Foreign key:](#foreign-key)
+- [Database Normalization](#database-normalization)
+    - [Anomalies:](#anomalies)
+    - [Normalization:](#normalization)
+      - [Functional Dependencies:](#functional-dependencies)
+      - [Normal Forms:](#normal-forms)
+      - [Example of Normalization:](#example-of-normalization)
 
 # Introduction
 A Database Management System (DBMS) is a software system that allows us to manage data through databases. It acts as a bridge between the database and users or applications.
@@ -110,6 +116,18 @@ Students, Courses, Instructors
 
 ![alt text](./images/ERD-1.png)
 
+- Resolving Many to Many relationships using junction table:
+
+![alt text](./images/resolving-many-to-many.png)
+
+![alt text](./images/ERD-2.png)
+
+Explanation of Relationships:
+
+Students to Enrollment: One-to-Many (1 student : many enrollments)
+Courses to Enrollment: One-to-Many (1 course : many enrollments)
+Instructor to courses: One-to-Many (1 instructor : many courses)
+
 
 # Relational Database Management System
 
@@ -161,6 +179,7 @@ A Super Key is any attribute or set of attributes that can uniquely identify a r
 In the above table, the possible super keys: 
 - {Student_ID}
 - {Email}
+- {phone}
 - {Student_ID, Email}
 - {Student_ID, Phone}
 
@@ -171,7 +190,7 @@ In the above table, the candidate keys are:
 - {Student_ID}
 - {Email}
 
-Note: {Student_ID, Email} is a super key but not a candidate keys because Student_ID and Email both alone can uniquely identify a record.
+Note: {Student_ID, Email} is a super key but not a candidate key because Student_ID and Email both alone can uniquely identify a record.
 
 #### Primary key: 
 A Primary Key is a candidate key that are:
@@ -179,7 +198,7 @@ A Primary Key is a candidate key that are:
 - Must be unique
 - Only one per table.
 
-In the above table, the primary keys are: 
+In the above table, the primary key are: 
 - Student_ID
 
 #### Alternate key: 
@@ -193,12 +212,7 @@ Note: Since Student_ID is the primary key, so in the table then Email is the alt
 #### Composite key: 
 A Composite Key is a candidate key that made of two or more attributes that together uniquely identify a record.
 
-| Student_ID | Email           | Phone       |
-| ---------- | --------------- | ----------- |
-| 1          | test1@gmail.com | 123-456-789 |
-| 2          | test2@gmail.com | 123-456-789 |
-| 3          | test3@gmail.com | 123-456-789 |
-
+Grade Table:
 
 | Grade_id | Student_ID | Course_ID | Grade |
 | -------- | ---------- | --------- | ----- |
@@ -218,3 +232,165 @@ A Foreign Key is an attribute in one table that refers to the primary key of ano
 In the Grade Table table, the foreign keys are:
 - {Student_ID} 
 
+
+# Database Normalization
+
+### Anomalies:
+Anomalies are data inconsistencies that occur in a database due to poor table design, especially when a table is not properly normalized.
+
+| Student_ID | Student_Name | Course_ID | Course_Name | Teacher   |
+| ---------- | ------------ | --------- | ----------- | --------- |
+| 1          | Rahim        | C101      | DBMS        | Mr. Karim |
+| 1          | Rahim        | C102      | OS          | Mr. Hasan |
+| 2          | Karim        | C101      | DBMS        | Mr. Karim |
+
+There are three main types of anomalies:
+
+- Insertion Anomaly:
+Insertion Anomaly occurs when you cannot insert data into a table without inserting some other unrelated data.
+
+Problem: 
+You want to add a new Course (C103, Networking, Mr. Alam) but you cannot do that without adding a student.
+
+- Update Anomaly
+Update Anomaly occurs when updating one piece of data requires updating multiple rows, and missing one causes inconsistency.
+
+Problem: 
+Suppose Mr. Karim changes his name to Mr. k. Karim, then you must update every row where Mr. Karim is mentioned. If you miss one, it leads to inconsistency.
+
+- Deletion Anomaly:
+Deletion Anomaly occurs when deleting one record unintentionally deletes important related data.
+
+Problem: 
+Suppose, student Rahim decides to drop 1 course (C101, DBMS). If you delete that row, you also lose all information about the course DBMS and its teacher Mr. Karim if no other student is enrolled in that course.
+
+To resolve these anomalies, we can normalize the database by splitting the table into multiple related tables.
+
+Student Table:
+| Student_ID | Student_Name |
+| ---------- | ------------ |
+| 1          | Rahim        |
+| 2          | Karim        |
+
+Course Table: 
+| Course_ID | Course_Name | Teacher   |
+| --------- | ----------- | --------- |
+| C101      | DBMS        | Mr. Karim |
+| C102      | OS          | Mr. Hasan |
+
+Enrollment Table: 
+| Enrollment_ID | Student_ID | Course_ID |
+| ------------- | ---------- | --------- |
+| 1             | 1          | C101      |
+| 2             | 1          | C102      |
+| 3             | 2          | C101      |
+
+### Normalization: 
+Normalization is the process of organizing data in a database using normal forms to reduce redundancy and anomalies. Normalization works by splitting large, poorly designed tables into smaller, well-structured tables and defining proper relationships.
+
+#### Functional Dependencies:
+functional dependency is a relationship that exists when one attribute uniquely determines another attribute.
+
+| Student_ID | Student_Name | gender |
+| ---------- | ------------ | ------ |
+| 1          | Rahim        | Male   |
+| 2          | Karim        | Male   |
+
+for example, here if we know the Student_ID, we can uniquely determine the Student_Name and gender. So, we can say that Student_ID functionally determines Student_Name and gender.
+
+But if we know the Student_Name or gender we cannot uniquely determine the Student_ID because multiple students can have the same name and gender.
+
+we can achieve normalization through functional dependencies using the Normal Forms (1NF, 2NF, 3NF etc).
+
+#### Normal Forms:
+Normal forms are a set of rules or guidelines used to evaluate and organize database tables based on functional dependencies.
+
+- 1NF (First Normal Form):
+A table is in 1NF if: 
+  - It contains only atomic values attribute means a single value that cannot be further divided. 
+    - 01711, 01822 (Not atomic) -> 01711 (atomic), 01822 (atomic)
+    - Dhaka, Bangladesh, 1212 (Not atomic) -> Dhaka (atomic), Bangladesh (atomic), 1212 (atomic)
+  - Each record can be uniquely identified by a primary key
+ 
+- 2NF (Second Normal Form)
+A table is in 2NF if: 
+  - It is already in 1NF
+  - No partial dependency exists 
+    - Partial dependency occurs when a non-key attribute is functionally dependent on a part of a composite key.
+ 
+- 3NF (Third Normal Form)
+A table is in 3NF if: 
+  - It is already in 2NF
+  - No transitive dependency exists
+    - Transitive dependency occurs when a non-key attribute is functionally dependent on another non-key attribute.
+
+#### Example of Normalization:
+
+| StudentID | StudentName | CourseID | CourseName | TeacherName  |
+| --------- | ----------- | -------- | ---------- | ------------ |
+| 1         | Rahim       | C1, C2   | DBMS, OS   | Karim, Hasan |
+| 2         | Karim       | C1       | DBMS       | Karim        |
+
+
+step 1: Convert to 1NF:
+- Atomic values only
+
+| StudentID | StudentName | CourseID | CourseName | TeacherName |
+| --------- | ----------- | -------- | ---------- | ----------- |
+| 1         | Rahim       | C1       | DBMS       | Karim       |
+| 1         | Rahim       | C2       | OS         | Hasan       |
+| 2         | Karim       | C1       | DBMS       | Karim       |
+
+step 2: Convert ot 2NF:
+- Remove partial dependencies
+
+Students table:
+| StudentID | StudentName |
+| --------- | ----------- |
+| 1         | Rahim       |
+| 2         | Karim       |
+
+Courses table:
+| CourseID | CourseName | TeacherName |
+| -------- | ---------- | ----------- |
+| C1       | DBMS       | Karim       |
+| C2       | OS         | Hasan       |
+
+
+Enrollments table:
+| StudentID | CourseID |
+| --------- | -------- |
+| 1         | C1       |
+| 1         | C2       |
+| 2         | C1       |
+
+
+step 3: Convert to 3NF:
+- Remove transitive dependencies
+
+Students table: 
+| StudentID | StudentName |
+| --------- | ----------- |
+| 1         | Rahim       |
+| 2         | Karim       |
+
+
+Teachers Table: 
+| TeacherID | TeacherName |
+| --------- | ----------- |
+| T1        | Karim       |
+| T2        | Hasan       |
+
+
+Courses table: 
+| CourseID | CourseName | TeacherID |
+| -------- | ---------- | --------- |
+| C1       | DBMS       | T1        |
+| C2       | OS         | T2        |
+
+Enrollments table: 
+| StudentID | CourseID |
+| --------- | -------- |
+| 1         | C1       |
+| 1         | C2       |
+| 2         | C1       |
