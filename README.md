@@ -54,16 +54,19 @@ Before the introduction of modern DBMS, data was managed using basic file system
    - Examples: MongoDB, Redis, Amazon DynamoDB etc.
 
 ### DBMS Architecture: 
-- 1-Tier Architecture: Client and database are part of the same local system.
+- 1-Tier Architecture: Client and database are part of the same local system and this architecture don't have application server.
   - client + database
-  - Example: MS Excel, SQLite, MS Access 
+  - Example: MS Excel, MS Access etc.
   
-- 2-Tier Architecture: Client and database are on separate systems.
+- 2-Tier Architecture: Client and database are on separate systems and this architecture also don't have application server.
   - client --> database
-  - Example: Desktop app → MySQL / SQL Server
+  - Example: Desktop App → MySQL, Desktop App → SQL
 
-- 3-Tier Architecture: The client communicates with an server, which then communicates with the database.
-  - client --> server --> database
+- 3-Tier Architecture: The client communicates with an application server, which then communicates with the database. Here every component are separated.
+  - client --> application server --> database
+  - Example: Web app (React) → Node/Express → MongoDB
+
+**Tips:** 1-Tier = all in one, 2-Tier = client + DB, 3-Tier = client + server + DB
 
 ### Software Development Life Cycle (SDLC):
 Planning -> Analysis -> System Design (Frontend, Backend, Database etc) -> Implementation (Building) -> Testing -> Maintenance (Deployment)
