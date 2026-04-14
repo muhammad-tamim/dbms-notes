@@ -7,8 +7,10 @@
   - [Difference Between DBMS and Database:](#difference-between-dbms-and-database)
   - [Why we Need DBMS:](#why-we-need-dbms)
   - [Most Common Types of DBMS:](#most-common-types-of-dbms)
+  - [PostgreSQL vs MySQL Vs MongoDB:](#postgresql-vs-mysql-vs-mongodb)
   - [SQL VS NoSQL:](#sql-vs-nosql)
   - [DBMS Architecture:](#dbms-architecture)
+  - [Schema vs CRUD vs Query:](#schema-vs-crud-vs-query)
 - [RDMBS Core Concepts:](#rdmbs-core-concepts)
   - [keys:](#keys)
     - [Super Key:](#super-key)
@@ -54,6 +56,19 @@ Before the introduction of modern DBMS, data was managed using basic traditional
 2. Non-Relational Database Management System (NoSQL DBMS):
    - Data is stored in a non-tabular(unstructured, flexible) format (key-value pairs, JSON-like documents, graphs etc).
    - Examples: MongoDB, Redis, Amazon DynamoDB etc.
+
+
+
+## PostgreSQL vs MySQL Vs MongoDB: 
+| Feature        | PostgreSQL                     | MySQL                   | MongoDB                |
+| -------------- | ------------------------------ | ----------------------- | ---------------------- |
+| Type           | Relational (RDBMS)             | Relational (RDBMS)      | Document-based         |
+| Schema         | Strict (but flexible via JSON) | Strict                  | Schema-less            |
+| Query Language | SQL (advanced)                 | SQL (simpler)           | N/A                    |
+| Transactions   | Full ACID support              | ACID (less advanced)    | Limited (improving)    |
+| Relationships  | Strong (JOINs, FK)             | Supported               | Weak / manual          |
+| JSON Support   | Yes (JSONB, powerful)          | Limited                 | Native                 |
+| Performance    | Best for complex queries       | Fast for simple queries | Best for flexible data |
 
 ## SQL VS NoSQL:
 In the context of MongoDB, a document is basically a single record in a collection, similar to a row in a SQL database.
@@ -108,7 +123,35 @@ MongoDB:
 
 **Tips:** 1-Tier = all in one, 2-Tier = client + DB, 3-Tier = client + server + DB
 
+## Schema vs CRUD vs Query: 
+- Schema: Structure of the data
+- CRUD: Types of operations (Create, Read, Update, Delete)
+- Query: Commands that perform those operations
 
+```sql
+-- users schema
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    age INT CHECK (age >= 0),
+    created_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+```js
+// CREATE (CRUD)
+app.post("/users", async (req: Request, res: Response) => {
+    const { name, email, age } = req.body;
+
+    const result = await pool.query(
+      `INSERT INTO users (name, email, age) VALUES ($1, $2, $3) RETURNING *`,
+      [name, email, age]
+    ); // Query
+
+    res.send(result.rows[0])
+});
+```
 
 # RDMBS Core Concepts:
 RDBMS (Relational Database Management System) is a type of database management system that stores data in a structured format using tables (relations).
