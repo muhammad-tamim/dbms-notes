@@ -7,6 +7,7 @@
   - [Difference Between DBMS and Database:](#difference-between-dbms-and-database)
   - [Why we Need DBMS:](#why-we-need-dbms)
   - [Most Common Types of DBMS:](#most-common-types-of-dbms)
+  - [SQL VS NoSQL:](#sql-vs-nosql)
   - [DBMS Architecture:](#dbms-architecture)
 - [RDMBS Core Concepts:](#rdmbs-core-concepts)
   - [keys in RDBMS:](#keys-in-rdbms)
@@ -28,6 +29,7 @@
   - [Example :](#example-)
 
 # Introduction
+
 ## What is DBMS:
 A Database Management System (DBMS) is a software system that allows us to manage data in databases efficiently.
 
@@ -53,6 +55,44 @@ Before the introduction of modern DBMS, data was managed using basic traditional
    - Data is stored in a non-tabular(unstructured, flexible) format (key-value pairs, JSON-like documents, graphs etc).
    - Examples: MongoDB, Redis, Amazon DynamoDB etc.
 
+## SQL VS NoSQL:
+In the context of MongoDB, a document is basically a single record in a collection, similar to a row in a SQL database.
+
+```
+SQL                      MongoDB
+------------------       -------------------
+Database                 Database
+  └── Table                └── Collection
+        └── Row                  └── Document
+              └── Column               └── Field
+```
+
+![alt text](./assets/images/Introduction/relational-vs-non-relatinal.png)
+
+SQL:
+```
+Users Table
+-----------
+id | name | email
+```
+
+MongoDB:
+```
+{
+  "_id": "123",
+  "name": "John",
+  "email": "john@example.com"
+}
+```
+
+
+| Feature       | SQL (Relational DB)     | NoSQL (MongoDB)         |
+| ------------- | ----------------------- | ----------------------- |
+| Structure     | Tables (rows & columns) | Collections (documents) |
+| Schema        | Fixed                   | Flexible                |
+| Relationships | Strong (JOINs)          | Weak / manual           |
+
+
 ## DBMS Architecture: 
 - 1-Tier Architecture: Client and database are part of the same local system and this architecture don't have application server.
   - client + database
@@ -67,6 +107,7 @@ Before the introduction of modern DBMS, data was managed using basic traditional
   - Example: Web app (React) → Node/Express → MongoDB
 
 **Tips:** 1-Tier = all in one, 2-Tier = client + DB, 3-Tier = client + server + DB
+
 
 
 # RDMBS Core Concepts:
