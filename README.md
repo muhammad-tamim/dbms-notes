@@ -6,6 +6,7 @@
   - [What is DBMS:](#what-is-dbms)
   - [Difference Between DBMS and Database:](#difference-between-dbms-and-database)
   - [Why we Need DBMS:](#why-we-need-dbms)
+  - [Types of DBMS Model:](#types-of-dbms-model)
   - [Most Common Types of DBMS:](#most-common-types-of-dbms)
   - [PostgreSQL vs MySQL Vs MongoDB:](#postgresql-vs-mysql-vs-mongodb)
   - [SQL VS NoSQL:](#sql-vs-nosql)
@@ -28,7 +29,7 @@
 - [Entity Relationship Diagram (ERD):](#entity-relationship-diagram-erd)
   - [Relationship Cardinality:](#relationship-cardinality)
   - [Relationship Cardinality Signs:](#relationship-cardinality-signs)
-  - [Example :](#example-)
+  - [Example:](#example)
 
 # Introduction
 
@@ -46,7 +47,82 @@ Before the introduction of modern DBMS, data was managed using basic traditional
 - Poor Security
 - No support for collaboration
 - No Backup/Recovery
-  
+
+## Types of DBMS Model: 
+- Hierarchical Model: 
+What it is: Tree structure (parent → child)
+Problem: No many-to-many (child can’t have multiple parents) 
+
+![alt text](./images/hierarchical-dbms-model.png)
+
+- Network Model: 
+What it is: Graph-like (many-to-many supported)
+Problem: Too complex to design & query
+
+![alt text](./images/network-dbms-model.png)
+
+- Relational Model: 
+What it is: Tables (rows + columns), uses SQL
+Problem: hard to scale & handle flexible and nested data  
+
+![alt text](./images/relational-dbms-model.png)
+
+- Document Model: 
+What it is: JSON-like flexible documents
+Problem: Data duplication, weak relationships
+
+```js
+// users collection
+[
+  {
+    _id: 1,
+    name: "Nadir",
+    address: "Dhaka",
+    phone: "123456",
+    orders: []
+  },
+  {
+    _id: 2,
+    name: "Arish",
+    address: "Sylhet",
+    phone: "236598",
+    orders: [
+      {
+        o_id: 1,
+        product: "prod1",
+        price: 500
+      }
+    ]
+  },
+  {
+    _id: 3,
+    name: "Rahil",
+    address: "Khulta",
+    phone: "895634",
+    orders: [
+      {
+        o_id: 2,
+        product: "prod2",
+        price: 520
+      },
+      {
+        o_id: 3,
+        product: "prod3",
+        price: 300
+      }
+    ]
+  },
+  {
+    _id: 4,
+    name: "Arish",
+    address: "Sylhet",
+    phone: "896528",
+    orders: []
+  }
+]
+```
+
+
 ## Most Common Types of DBMS: 
 
 1. Relational Database Management System (RDBMS):
@@ -82,7 +158,7 @@ Database                 Database
               └── Column               └── Field
 ```
 
-![alt text](./assets/images/Introduction/relational-vs-non-relatinal.png)
+![alt text](./images/relational-vs-non-relatinal.png)
 
 SQL:
 ```
@@ -126,7 +202,8 @@ MongoDB:
 ## Schema vs CRUD vs Query: 
 - Schema: Structure of the data
 - CRUD: Types of operations (Create, Read, Update, Delete)
-- Query: Commands that perform those operations
+- Query: A query is any command sent to the database, but in practice, developers often use the term to refer specifically to SELECT operations.
+
 
 ```sql
 -- users schema
@@ -153,18 +230,32 @@ app.post("/users", async (req: Request, res: Response) => {
 });
 ```
 
+```js
+// GET (CRUD)
+app.get("/users", async (req: Request, res: Response) => {
+
+    const result = await pool.query(`SELECT * FROM users`,); // Query
+
+    res.send(result.rows[0])
+});
+```
+
+
 # RDMBS Core Concepts:
 RDBMS (Relational Database Management System) is a type of database management system that stores data in a structured format using tables (relations).
 
 ![alt text](./images/table-or-relation.png)
 
+So, in this table we can say users entity or users table 
+
+- Entity: Is a real-world object or concept that we store data about. In the image above, the users table represents the User entity.
 - Column/attribute/field: A column defines what kind of data is stored.
 - Row/Tuple/Record: A row is a single entry of data.
 - Degree: Total number of columns in a table
 - Cardinality: Total number of rows in a table
 
 ## keys:
-A key is an attribute (or a set of attributes) used to uniquely identify a row (tuple) in a table and to establish relationships between tables.
+A key is a general term for attributes used to identify rows or manage relationships in a table.
 
 | Student_ID | Email           | Phone        |
 | ---------- | --------------- | ------------ |
@@ -172,8 +263,9 @@ A key is an attribute (or a set of attributes) used to uniquely identify a row (
 | 2          | test2@gmail.com | 123-456-7890 |
 | 3          | test3@gmail.com | 123-456-7891 |
 
+
 ### Super Key: 
-A Super Key is any attribute or set of attributes that can uniquely identify a record in a table.
+A super key is an attribute or set of attributes used to uniquely identify a row in a table.
 
 In the above table, the possible super keys: 
 - {Student_ID}
@@ -230,6 +322,7 @@ A Foreign Key is an attribute in one table that refers to the primary key of ano
 
 In the Grade Table table, the foreign keys are:
 - {Student_ID} 
+
 
 
 
@@ -308,11 +401,10 @@ Normal forms are a set of rules or guidelines used to evaluate and organize data
 
 - 1NF (First Normal Form):
 A table is in 1NF if: 
-  - It contains only atomic values attribute means a single value that cannot be further divided. 
-    - 01711, 01822 (Not atomic) -> 01711 (atomic), 01822 (atomic)
-    - Dhaka, Bangladesh, 1212 (Not atomic) -> Dhaka (atomic), Bangladesh (atomic), 1212 (atomic)
-  - Each record can be uniquely identified by a primary key
- 
+  - Each column must contain atomic (single) values. 
+  - Each row can be uniquely identified by a primary key
+
+
 - 2NF (Second Normal Form)
 A table is in 2NF if: 
   - It is already in 1NF
@@ -424,7 +516,7 @@ Types of Relationship Cardinality:
 ![alt text](./images/relationship-cardinality-signs.png)
 
 
-## Example :
+## Example:
 Business idea: EduHub is a global website offering a variety of technology courses across different subjects, allowing students to enroll and learn
 
 Database Design: 
@@ -446,6 +538,8 @@ Students, Courses, Instructors
 
 Explanation of Relationships:
 
-Students to Enrollment: One-to-Many (1 student : many enrollments)
-Courses to Enrollment: One-to-Many (1 course : many enrollments)
-Instructor to courses: One-to-Many (1 instructor : many courses)
+- Students to Enrollment: One-to-Many (1 student : many enrollments)
+- Courses to Enrollment: One-to-Many (1 course : many enrollments)
+- Instructor to courses: One-to-Many (1 instructor : many courses)
+
+Note: Resolving many-to-many relationships using a junction table is important because relational databases cannot directly store many-to-many relationships.
