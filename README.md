@@ -10,7 +10,7 @@
   - [SQL VS NoSQL:](#sql-vs-nosql)
   - [DBMS Architecture:](#dbms-architecture)
 - [RDMBS Core Concepts:](#rdmbs-core-concepts)
-  - [keys in RDBMS:](#keys-in-rdbms)
+  - [keys:](#keys)
     - [Super Key:](#super-key)
     - [Candidate key:](#candidate-key)
     - [Primary key:](#primary-key)
@@ -115,7 +115,12 @@ RDBMS (Relational Database Management System) is a type of database management s
 
 ![alt text](./images/table-or-relation.png)
 
-## keys in RDBMS:
+- Column/attribute/field: A column defines what kind of data is stored.
+- Row/Tuple/Record: A row is a single entry of data.
+- Degree: Total number of columns in a table
+- Cardinality: Total number of rows in a table
+
+## keys:
 A key is an attribute (or a set of attributes) used to uniquely identify a row (tuple) in a table and to establish relationships between tables.
 
 | Student_ID | Email           | Phone        |
