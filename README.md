@@ -50,26 +50,26 @@ Before the introduction of modern DBMS, data was managed using basic traditional
 
 ## 1.4. Types of DBMS Model: 
 - Hierarchical Model: 
-What it is: Tree structure (parent → child)
-Problem: No many-to-many (child can’t have multiple parents) 
+  - What it is: Tree structure (parent → child)
+  - Problem: No many-to-many (child can’t have multiple parents) 
 
 ![alt text](./images/hierarchical-dbms-model.png)
 
 - Network Model: 
-What it is: Graph-like (many-to-many supported)
-Problem: Too complex to design & query
+  - What it is: Graph-like (many-to-many supported)
+  - Problem: Too complex to design & query
 
 ![alt text](./images/network-dbms-model.png)
 
 - Relational Model: 
-What it is: Tables (rows + columns), uses SQL
-Problem: hard to scale & handle flexible and nested data  
+  - What it is: Tables (rows + columns), uses SQL
+  - Problem: hard to handle flexible and nested data  
 
 ![alt text](./images/relational-dbms-model.png)
 
 - Document Model: 
-What it is: JSON-like flexible documents
-Problem: Data duplication, weak relationships
+  - What it is: JSON-like flexible documents
+  - Problem: Data duplication, weak relationships
 
 ```js
 // users collection
@@ -94,31 +94,6 @@ Problem: Data duplication, weak relationships
       }
     ]
   },
-  {
-    _id: 3,
-    name: "Rahil",
-    address: "Khulta",
-    phone: "895634",
-    orders: [
-      {
-        o_id: 2,
-        product: "prod2",
-        price: 520
-      },
-      {
-        o_id: 3,
-        product: "prod3",
-        price: 300
-      }
-    ]
-  },
-  {
-    _id: 4,
-    name: "Arish",
-    address: "Sylhet",
-    phone: "896528",
-    orders: []
-  }
 ]
 ```
 
@@ -128,11 +103,10 @@ Problem: Data duplication, weak relationships
 1. Relational Database Management System (RDBMS):
    - Data is organized in tables (relations) with rows and columns.
    - Uses Structured Query Language (SQL).
-   - Examples: Oracle, MySQL, Microsoft SQL Server, PostgreSQL etc.
+   - Examples: MySQL, PostgreSQL, Oracle, Microsoft SQL Server etc.
 2. Non-Relational Database Management System (NoSQL DBMS):
    - Data is stored in a non-tabular(unstructured, flexible) format (key-value pairs, JSON-like documents, graphs etc).
    - Examples: MongoDB, Redis, Amazon DynamoDB etc.
-
 
 
 ## 1.6. PostgreSQL vs MySQL Vs MongoDB: 
@@ -158,7 +132,6 @@ Database                 Database
               └── Column               └── Field
 ```
 
-![alt text](./images/relational-vs-non-relatinal.png)
 
 SQL:
 ```
@@ -200,13 +173,16 @@ MongoDB:
 **Tips:** 1-Tier = all in one, 2-Tier = client + DB, 3-Tier = client + server + DB
 
 ## 1.9. Schema vs CRUD vs Query: 
-- Schema: Structure of the data
-- CRUD: Types of operations (Create, Read, Update, Delete)
-- Query: A query is any command sent to the database, but in practice, developers often use the term to refer specifically to SELECT operations.
+- Schema: Defines the structure of the data.
+- CRUD: Types of Database Operations (Create, Read, Update, Delete) 
+- Query: Any command/request sent to the database.
 
+Note: 
+- CRUD = What you want to do
+- Query = The command used to do it
 
 ```sql
--- users schema
+-- schema
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -217,24 +193,12 @@ CREATE TABLE users (
 ```
 
 ```js
-// CREATE (CRUD)
+// CRUD Operation
 app.post("/users", async (req: Request, res: Response) => {
     const { name, email, age } = req.body;
 
     const result = await pool.query(
-      `INSERT INTO users (name, email, age) VALUES ($1, $2, $3) RETURNING *`,
-      [name, email, age]
-    ); // Query
-
-    res.send(result.rows[0])
-});
-```
-
-```js
-// GET (CRUD)
-app.get("/users", async (req: Request, res: Response) => {
-
-    const result = await pool.query(`SELECT * FROM users`,); // Query
+      `INSERT INTO users (name, email, age) VALUES ($1, $2, $3) RETURNING *`, [name, email, age]); // Query
 
     res.send(result.rows[0])
 });
