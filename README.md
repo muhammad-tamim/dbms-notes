@@ -12,14 +12,15 @@
   - [1.7. SQL VS NoSQL:](#17-sql-vs-nosql)
   - [1.8. DBMS Architecture:](#18-dbms-architecture)
   - [1.9. Schema vs CRUD vs Query:](#19-schema-vs-crud-vs-query)
-- [2. RDMBS Core Concepts:](#2-rdmbs-core-concepts)
+- [2. RDBMS Core Concepts:](#2-rdbms-core-concepts)
   - [2.1. keys:](#21-keys)
-    - [2.1.1. Super Key:](#211-super-key)
-    - [2.1.2. Candidate key:](#212-candidate-key)
-    - [2.1.3. Primary key:](#213-primary-key)
-    - [2.1.4. Alternate key:](#214-alternate-key)
-    - [2.1.5. Composite key:](#215-composite-key)
-    - [2.1.6. Foreign key:](#216-foreign-key)
+    - [2.1.1. Primary Key (PK):](#211-primary-key-pk)
+    - [2.1.2. Foreign Key (FK):](#212-foreign-key-fk)
+    - [2.1.3. Super Key:](#213-super-key)
+    - [2.1.4. Candidate Key:](#214-candidate-key)
+    - [2.1.5. Alternate Key:](#215-alternate-key)
+    - [2.1.6. Composite Key (Compound Key):](#216-composite-key-compound-key)
+    - [2.1.7. Unique Key:](#217-unique-key)
 - [3. Database Normalization](#3-database-normalization)
     - [3.0.1. Anomalies:](#301-anomalies)
     - [3.0.2. Normalization:](#302-normalization)
@@ -205,90 +206,159 @@ app.post("/users", async (req: Request, res: Response) => {
 ```
 
 
-# 2. RDMBS Core Concepts:
+# 2. RDBMS Core Concepts:
 RDBMS (Relational Database Management System) is a type of database management system that stores data in a structured format using tables (relations).
 
 ![alt text](./images/table-or-relation.png)
 
-So, in this table we can say users entity or users table 
-
-- Entity: Is a real-world object or concept that we store data about. In the image above, the users table represents the User entity.
+- Entity: Is a real-world object or concept that we store data about. In the image above, the users table represents the User entity. So, in this table we can say users entity or users table.
 - Column/attribute/field: A column defines what kind of data is stored.
 - Row/Tuple/Record: A row is a single entry of data.
 - Degree: Total number of columns in a table
 - Cardinality: Total number of rows in a table
 
 ## 2.1. keys:
-A key is a general term for attributes used to identify rows or manage relationships in a table.
+A key is a column or a set of columns used to uniquely identify a row in a table and establish relationships between tables.
 
-| Student_ID | Email           | Phone        |
-| ---------- | --------------- | ------------ |
-| 1          | test1@gmail.com | 123-456-789  |
-| 2          | test2@gmail.com | 123-456-7890 |
-| 3          | test3@gmail.com | 123-456-7891 |
-
-
-### 2.1.1. Super Key: 
-A super key is an attribute or set of attributes used to uniquely identify a row in a table.
-
-In the above table, the possible super keys: 
-- {Student_ID}
-- {Email}
-- {phone}
-- {Student_ID, Email}
-- {Student_ID, Phone}
-
-### 2.1.2. Candidate key: 
-A Candidate Key is a minimal super key.
-
-In the above table, the candidate keys are: 
-- {Student_ID}
-- {Email}
-
-Note: {Student_ID, Email} is a super key but not a candidate key because Student_ID and Email both alone can uniquely identify a record.
-
-### 2.1.3. Primary key: 
-A Primary Key is a candidate key that are:
-- Cannot be NULL
+### 2.1.1. Primary Key (PK): 
+A Primary Key uniquely identifies each row in a table. A Primary Key:
 - Must be unique
-- Only one per table.
+- Cannot be NULL
+- Only one primary key per table
 
-In the above table, the primary key are: 
-- Student_ID
+```sql
+CREATE TABLE users (
+    id INT PRIMARY KEY,
+    name VARCHAR(100)
+)
+```
 
-### 2.1.4. Alternate key: 
-All candidate keys that are NOT chosen as the primary key are called Alternate Keys.
+so here id is primary key.
 
-In the above table, the alternate keys are: 
-- Email
+### 2.1.2. Foreign Key (FK):
+A Foreign Key creates a relationship between two tables.
 
-Note: Since Student_ID is the primary key, so in the table then Email is the alternate key.
+```sql
+CREATE TABLE users (
+    id INT PRIMARY KEY,
+    name VARCHAR(100)
+);
 
-### 2.1.5. Composite key: 
-A Composite Key is a candidate key that made of two or more attributes that together uniquely identify a record.
+CREATE TABLE orders (
+    id INT PRIMARY KEY,
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+```
 
-Grade Table:
+### 2.1.3. Super Key:
+A Super Key is any column or set of columns that uniquely identifies a row.
 
-| Grade_id | Student_ID | Course_ID | Grade |
-| -------- | ---------- | --------- | ----- |
-| 1        | 1          | CS101     | A     |
-| 2        | 2          | CS101     | A     |
-| 3        | 3          | CS101     | A     |
-| 4        | 1          | CS102     | A     |
-| 5        | 1          | CS103     | A     |
-| 6        | 2          | CS103     | A     |
+```sql
+CREATE TABLE users (
+    id INT PRIMARY KEY,
+    email VARCHAR(255) UNIQUE,
+    username VARCHAR(50) UNIQUE,
+);
+```
 
-here, the candidate keys are: 
-- {Student_ID, Course_ID}
+all super keys: 
 
-### 2.1.6. Foreign key:  
-A Foreign Key is an attribute in one table that refers to the primary key of another table. It establishes relationships between tables.
+```
+(id)
+(email)
+(username)
 
-In the Grade Table table, the foreign keys are:
-- {Student_ID} 
+(id, email)
+(id, username)
+(email, username)
+
+(id, email, username)
+```
+
+
+### 2.1.4. Candidate Key: 
+A Candidate Key is a minimal Super Key. 
+
+```sql
+CREATE TABLE users (
+    id INT PRIMARY KEY,
+    email VARCHAR(255) UNIQUE,
+    username VARCHAR(50) UNIQUE,
+);
+```
+
+here super keys are: 
+
+```
+(id)
+(email)
+(username)
+
+(id, email)
+(id, username)
+(email, username)
+
+(id, email, username)
+```
+
+but candidate keys are:
+
+```
+(id)
+(email)
+(username)
+```
+
+Just think id, email and username all can uniquely identify a record alone, thats why they are candidate keys.
 
 
 
+### 2.1.5. Alternate Key:
+An Alternate Key is a Candidate Key that was not chosen as the Primary Key.
+
+```sql
+CREATE TABLE users (
+    id INT PRIMARY KEY,
+    email VARCHAR(255) UNIQUE,
+    username VARCHAR(50) UNIQUE
+);
+```
+
+if id is a primary key then email and username are alternate keys.
+
+### 2.1.6. Composite Key (Compound Key):
+A Composite Key is a key that made up of two or more columns for uniquely identify a row.
+
+```sql
+CREATE TABLE enrollments (
+    student_id INT,
+    course_id INT,
+    FOREIGN KEY (student_id) REFERENCES students(id),
+    FOREIGN KEY (course_id) REFERENCES courses(id),
+    enrollment_id PRIMARY KEY (student_id, course_id)
+);
+```
+
+| enrollment_id | student_id | course_id |
+| ------------- | ---------- | --------- |
+| 1101          | 1          | 101       |
+| 1102          | 1          | 102       |
+
+Neither column is unique alone, but together they are. So thats why student_id and course_id together made a composite key.called enrollment_id
+
+### 2.1.7. Unique Key: 
+A Unique Key ensures all values are unique.
+
+```sql
+CREATE TABLE users (
+    id INT PRIMARY KEY,
+    email VARCHAR(255) UNIQUE,
+    username VARCHAR(50) UNIQUE,
+);
+```
+
+here email and username are unique keys.
 
 
 # 3. Database Normalization
