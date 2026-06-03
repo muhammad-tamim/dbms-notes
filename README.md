@@ -2,45 +2,45 @@
 
 **Note:** Most DBMS concepts are based on **Relational Database Management Systems (RDBMS)**. 
 
-- [Introduction](#introduction)
-  - [What is DBMS:](#what-is-dbms)
-  - [Difference Between DBMS and Database:](#difference-between-dbms-and-database)
-  - [Why we Need DBMS:](#why-we-need-dbms)
-  - [Types of DBMS Model:](#types-of-dbms-model)
-  - [Most Common Types of DBMS:](#most-common-types-of-dbms)
-  - [PostgreSQL vs MySQL Vs MongoDB:](#postgresql-vs-mysql-vs-mongodb)
-  - [SQL VS NoSQL:](#sql-vs-nosql)
-  - [DBMS Architecture:](#dbms-architecture)
-  - [Schema vs CRUD vs Query:](#schema-vs-crud-vs-query)
-- [RDMBS Core Concepts:](#rdmbs-core-concepts)
-  - [keys:](#keys)
-    - [Super Key:](#super-key)
-    - [Candidate key:](#candidate-key)
-    - [Primary key:](#primary-key)
-    - [Alternate key:](#alternate-key)
-    - [Composite key:](#composite-key)
-    - [Foreign key:](#foreign-key)
-- [Database Normalization](#database-normalization)
-    - [Anomalies:](#anomalies)
-    - [Normalization:](#normalization)
-      - [Functional Dependencies:](#functional-dependencies)
-      - [Normal Forms:](#normal-forms)
-      - [Example of Normalization:](#example-of-normalization)
-- [Entity Relationship Diagram (ERD):](#entity-relationship-diagram-erd)
-  - [Relationship Cardinality:](#relationship-cardinality)
-  - [Relationship Cardinality Signs:](#relationship-cardinality-signs)
-  - [Example:](#example)
+- [1. Introduction](#1-introduction)
+  - [1.1. What is DBMS:](#11-what-is-dbms)
+  - [1.2. Difference Between DBMS and Database:](#12-difference-between-dbms-and-database)
+  - [1.3. Why we Need DBMS:](#13-why-we-need-dbms)
+  - [1.4. Types of DBMS Model:](#14-types-of-dbms-model)
+  - [1.5. Most Common Types of DBMS:](#15-most-common-types-of-dbms)
+  - [1.6. PostgreSQL vs MySQL Vs MongoDB:](#16-postgresql-vs-mysql-vs-mongodb)
+  - [1.7. SQL VS NoSQL:](#17-sql-vs-nosql)
+  - [1.8. DBMS Architecture:](#18-dbms-architecture)
+  - [1.9. Schema vs CRUD vs Query:](#19-schema-vs-crud-vs-query)
+- [2. RDMBS Core Concepts:](#2-rdmbs-core-concepts)
+  - [2.1. keys:](#21-keys)
+    - [2.1.1. Super Key:](#211-super-key)
+    - [2.1.2. Candidate key:](#212-candidate-key)
+    - [2.1.3. Primary key:](#213-primary-key)
+    - [2.1.4. Alternate key:](#214-alternate-key)
+    - [2.1.5. Composite key:](#215-composite-key)
+    - [2.1.6. Foreign key:](#216-foreign-key)
+- [3. Database Normalization](#3-database-normalization)
+    - [3.0.1. Anomalies:](#301-anomalies)
+    - [3.0.2. Normalization:](#302-normalization)
+      - [3.0.2.1. Functional Dependencies:](#3021-functional-dependencies)
+      - [3.0.2.2. Normal Forms:](#3022-normal-forms)
+      - [3.0.2.3. Example of Normalization:](#3023-example-of-normalization)
+- [4. Entity Relationship Diagram (ERD):](#4-entity-relationship-diagram-erd)
+  - [4.1. Relationship Cardinality:](#41-relationship-cardinality)
+  - [4.2. Relationship Cardinality Signs:](#42-relationship-cardinality-signs)
+  - [4.3. Example:](#43-example)
 
-# Introduction
+# 1. Introduction
 
-## What is DBMS:
-A Database Management System (DBMS) is a software system that allows us to manage data in databases efficiently.
+## 1.1. What is DBMS:
+A DBMS (Database Management System) is a software system that allows us to manage data in databases efficiently.
 
-## Difference Between DBMS and Database: 
+## 1.2. Difference Between DBMS and Database: 
 - Databases: A database is an electronic storage system where an organized collection of data is stored.
 - DBMS: DBMS is a software system that allows us to manage data in databases efficiently like MySQL, PostgreSQL, MongoDB
 
-## Why we Need DBMS:
+## 1.3. Why we Need DBMS:
 Before the introduction of modern DBMS, data was managed using basic traditional file systems on hard drives. While this approach allowed us to manage files as needed, but it came with numerous challenges such as: 
 - Data Redundancy and inconsistency
 - Difficult in Accessing the data
@@ -48,7 +48,7 @@ Before the introduction of modern DBMS, data was managed using basic traditional
 - No support for collaboration
 - No Backup/Recovery
 
-## Types of DBMS Model: 
+## 1.4. Types of DBMS Model: 
 - Hierarchical Model: 
 What it is: Tree structure (parent → child)
 Problem: No many-to-many (child can’t have multiple parents) 
@@ -123,7 +123,7 @@ Problem: Data duplication, weak relationships
 ```
 
 
-## Most Common Types of DBMS: 
+## 1.5. Most Common Types of DBMS: 
 
 1. Relational Database Management System (RDBMS):
    - Data is organized in tables (relations) with rows and columns.
@@ -135,7 +135,7 @@ Problem: Data duplication, weak relationships
 
 
 
-## PostgreSQL vs MySQL Vs MongoDB: 
+## 1.6. PostgreSQL vs MySQL Vs MongoDB: 
 | Feature        | PostgreSQL                     | MySQL                   | MongoDB                |
 | -------------- | ------------------------------ | ----------------------- | ---------------------- |
 | Type           | Relational (RDBMS)             | Relational (RDBMS)      | Document-based         |
@@ -146,7 +146,7 @@ Problem: Data duplication, weak relationships
 | JSON Support   | Yes (JSONB, powerful)          | Limited                 | Native                 |
 | Performance    | Best for complex queries       | Fast for simple queries | Best for flexible data |
 
-## SQL VS NoSQL:
+## 1.7. SQL VS NoSQL:
 In the context of MongoDB, a document is basically a single record in a collection, similar to a row in a SQL database.
 
 ```
@@ -184,7 +184,7 @@ MongoDB:
 | Relationships | Strong (JOINs)          | Weak / manual           |
 
 
-## DBMS Architecture: 
+## 1.8. DBMS Architecture: 
 - 1-Tier Architecture: Client and database are part of the same local system and this architecture don't have application server.
   - client + database
   - Example: MS Excel, MS Access etc.
@@ -199,7 +199,7 @@ MongoDB:
 
 **Tips:** 1-Tier = all in one, 2-Tier = client + DB, 3-Tier = client + server + DB
 
-## Schema vs CRUD vs Query: 
+## 1.9. Schema vs CRUD vs Query: 
 - Schema: Structure of the data
 - CRUD: Types of operations (Create, Read, Update, Delete)
 - Query: A query is any command sent to the database, but in practice, developers often use the term to refer specifically to SELECT operations.
@@ -241,7 +241,7 @@ app.get("/users", async (req: Request, res: Response) => {
 ```
 
 
-# RDMBS Core Concepts:
+# 2. RDMBS Core Concepts:
 RDBMS (Relational Database Management System) is a type of database management system that stores data in a structured format using tables (relations).
 
 ![alt text](./images/table-or-relation.png)
@@ -254,7 +254,7 @@ So, in this table we can say users entity or users table
 - Degree: Total number of columns in a table
 - Cardinality: Total number of rows in a table
 
-## keys:
+## 2.1. keys:
 A key is a general term for attributes used to identify rows or manage relationships in a table.
 
 | Student_ID | Email           | Phone        |
@@ -264,7 +264,7 @@ A key is a general term for attributes used to identify rows or manage relations
 | 3          | test3@gmail.com | 123-456-7891 |
 
 
-### Super Key: 
+### 2.1.1. Super Key: 
 A super key is an attribute or set of attributes used to uniquely identify a row in a table.
 
 In the above table, the possible super keys: 
@@ -274,7 +274,7 @@ In the above table, the possible super keys:
 - {Student_ID, Email}
 - {Student_ID, Phone}
 
-### Candidate key: 
+### 2.1.2. Candidate key: 
 A Candidate Key is a minimal super key.
 
 In the above table, the candidate keys are: 
@@ -283,7 +283,7 @@ In the above table, the candidate keys are:
 
 Note: {Student_ID, Email} is a super key but not a candidate key because Student_ID and Email both alone can uniquely identify a record.
 
-### Primary key: 
+### 2.1.3. Primary key: 
 A Primary Key is a candidate key that are:
 - Cannot be NULL
 - Must be unique
@@ -292,7 +292,7 @@ A Primary Key is a candidate key that are:
 In the above table, the primary key are: 
 - Student_ID
 
-### Alternate key: 
+### 2.1.4. Alternate key: 
 All candidate keys that are NOT chosen as the primary key are called Alternate Keys.
 
 In the above table, the alternate keys are: 
@@ -300,7 +300,7 @@ In the above table, the alternate keys are:
 
 Note: Since Student_ID is the primary key, so in the table then Email is the alternate key.
 
-### Composite key: 
+### 2.1.5. Composite key: 
 A Composite Key is a candidate key that made of two or more attributes that together uniquely identify a record.
 
 Grade Table:
@@ -317,7 +317,7 @@ Grade Table:
 here, the candidate keys are: 
 - {Student_ID, Course_ID}
 
-### Foreign key:  
+### 2.1.6. Foreign key:  
 A Foreign Key is an attribute in one table that refers to the primary key of another table. It establishes relationships between tables.
 
 In the Grade Table table, the foreign keys are:
@@ -327,9 +327,9 @@ In the Grade Table table, the foreign keys are:
 
 
 
-# Database Normalization
+# 3. Database Normalization
 
-### Anomalies:
+### 3.0.1. Anomalies:
 Anomalies are data inconsistencies that occur in a database due to poor table design, especially when a table is not properly normalized.
 
 | Student_ID | Student_Name | Course_ID | Course_Name | Teacher   |
@@ -379,10 +379,10 @@ Enrollment Table:
 | 2             | 1          | C102      |
 | 3             | 2          | C101      |
 
-### Normalization: 
+### 3.0.2. Normalization: 
 Normalization is the process of organizing data in a database using normal forms to reduce redundancy and anomalies. Normalization works by splitting large, poorly designed tables into smaller, well-structured tables and defining proper relationships.
 
-#### Functional Dependencies:
+#### 3.0.2.1. Functional Dependencies:
 functional dependency is a relationship that exists when one attribute uniquely determines another attribute.
 
 | Student_ID | Student_Name | gender |
@@ -396,7 +396,7 @@ But if we know the Student_Name or gender we cannot uniquely determine the Stude
 
 we can achieve normalization through functional dependencies using the Normal Forms (1NF, 2NF, 3NF etc).
 
-#### Normal Forms:
+#### 3.0.2.2. Normal Forms:
 Normal forms are a set of rules or guidelines used to evaluate and organize database tables based on functional dependencies.
 
 - 1NF (First Normal Form):
@@ -417,7 +417,7 @@ A table is in 3NF if:
   - No transitive dependency exists
     - Transitive dependency occurs when a non-key attribute is functionally dependent on another non-key attribute.
 
-#### Example of Normalization:
+#### 3.0.2.3. Example of Normalization:
 
 | StudentID | StudentName | CourseID | CourseName | TeacherName  |
 | --------- | ----------- | -------- | ---------- | ------------ |
@@ -488,9 +488,9 @@ Enrollments table:
 | 1         | C2       |
 | 2         | C1       |
 
-# Entity Relationship Diagram (ERD): 
+# 4. Entity Relationship Diagram (ERD): 
 Entity-Relationship Diagram is a visual representation of entities, their attributes, and the relationships between them in a database system.
-## Relationship Cardinality:
+## 4.1. Relationship Cardinality:
 Relationship cardinality defines how many instances of one entity can be associated with how many instances of another entity in a database relationship.
 
 Types of Relationship Cardinality: 
@@ -511,12 +511,12 @@ Types of Relationship Cardinality:
   - Many records in Entity A can be related to many records in Entity B.
   - A student can enroll in many courses, and a course can have many students.
 
-## Relationship Cardinality Signs: 
+## 4.2. Relationship Cardinality Signs: 
 
 ![alt text](./images/relationship-cardinality-signs.png)
 
 
-## Example:
+## 4.3. Example:
 Business idea: EduHub is a global website offering a variety of technology courses across different subjects, allowing students to enroll and learn
 
 Database Design: 
