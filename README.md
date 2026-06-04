@@ -34,6 +34,11 @@
   - [4.3. Example of Normalization:](#43-example-of-normalization)
 - [5. Entity Relationship Diagram (ERD):](#5-entity-relationship-diagram-erd)
   - [5.1. Relationship Cardinality:](#51-relationship-cardinality)
+    - [5.1.1. Types of Relationship Cardinality](#511-types-of-relationship-cardinality)
+      - [5.1.1.1. One-to-One (1:1):](#5111-one-to-one-11)
+      - [5.1.1.2. One-to-Many (1:N):](#5112-one-to-many-1n)
+      - [5.1.1.3. Many-to-One (N:1):](#5113-many-to-one-n1)
+      - [5.1.1.4. Many-to-Many (M:N):](#5114-many-to-many-mn)
   - [5.2. Relationship Cardinality Signs:](#52-relationship-cardinality-signs)
   - [5.3. Example:](#53-example)
 
@@ -48,7 +53,7 @@ A DBMS (Database Management System) is a software system that allows us to manag
 
 ## 1.3. Why we Need DBMS:
 Before the introduction of modern DBMS, data was managed using basic traditional file systems on hard drives. While this approach allowed us to manage files as needed, but it came with numerous challenges such as: 
-- Data Redundancy and inconsistency
+- Data Redundancy (duplicated data) and inconsistency 
 - Difficult in Accessing the data
 - Poor Security
 - No support for collaboration
@@ -547,27 +552,98 @@ Enrollments table:
 | 2         | C1       |
 
 # 5. Entity Relationship Diagram (ERD): 
-Entity-Relationship Diagram is a visual representation of entities, their attributes, and the relationships between them in a database system.
+An Entity Relationship Diagram (ERD) is a visual representation of a database that shows entities (tables) and the relationships between them.
+
 ## 5.1. Relationship Cardinality:
-Relationship cardinality defines how many instances of one entity can be associated with how many instances of another entity in a database relationship.
+Relationship cardinality defines how many instances (records) of one entity (tables) can be associated with how many instances of another entity.
 
 Types of Relationship Cardinality: 
 
-- One-to-One (1:1)
-  - One record in Entity A is related to only one record in Entity B.
-  - One student has one student ID.
-  
-- One-to-Many (1:N)
-  - One record in Entity A can be related to many records in Entity B, but Entity B relates to only one record in A.
-  - One student can enroll in many courses, but each course belongs to one student.
+### 5.1.1. Types of Relationship Cardinality
 
-- Many-to-One (N:1)
-  - Many records in Entity A can be related to one record in Entity B, but Entity B relates to many records in A.
-  - Many students can enroll in-one course, but each student belongs to one course
+#### 5.1.1.1. One-to-One (1:1):
+- One record in Table A is related to exactly one record in Table B.
+- Example:
+  - One User has one Profile.
+  - One Profile belongs to one User.
+users:
+| id  | name  |
+| --- | ----- |
+| 1   | Tamim |
+| 2   | John  |
 
-- Many-to-Many (M:N)
-  - Many records in Entity A can be related to many records in Entity B.
-  - A student can enroll in many courses, and a course can have many students.
+profiles:
+| id  | user_id | bio                  |
+| --- | ------- | -------------------- |
+| 1   | 1       | Full Stack Developer |
+| 2   | 2       | Backend Developer    |
+
+
+#### 5.1.1.2. One-to-Many (1:N):
+- One record in Table A can relate to many records in Table B.
+- Example:
+  - One User can place many Orders.
+  - One Order belongs to one User.
+
+users:
+| id  | name  |
+| --- | ----- |
+| 1   | Tamim |
+
+orders:
+| id  | user_id | total |
+| --- | ------- | ----- |
+| 1   | 1       | 100   |
+| 2   | 1       | 250   |
+| 3   | 1       | 500   |
+
+User 1 has multiple orders.
+
+#### 5.1.1.3. Many-to-One (N:1):
+- Many records in Table A can relate to one record in Table B.
+- Example:
+  - Many Orders can belong to one User.
+  - One User can have many Orders.
+
+orders: 
+| id  | user_id | total |
+| --- | ------- | ----- |
+| 101 | 1       | 100   |
+| 102 | 1       | 250   |
+| 103 | 1       | 500   |
+
+users: 
+| id  | name  |
+| --- | ----- |
+| 1   | Tamim |
+
+User 1 has multiple orders.
+
+#### 5.1.1.4. Many-to-Many (M:N):
+- Many records in Table A can relate to many records in Table B.
+- Example:
+  - One Student can enroll in many Courses.
+  - One Course can have many Students.
+
+students:
+| id  | name  |
+| --- | ----- |
+| 1   | Tamim |
+| 2   | John  |
+
+courses:
+| id   | title      |
+| ---- | ---------- |
+| C101 | Database   |
+| C102 | Networking |
+
+enrollments:
+| id  | student_id | course_id |
+| --- | ---------- | --------- |
+| 1   | 1          | C101      |
+| 2   | 1          | C102      |
+| 3   | 2          | C101      |
+
 
 ## 5.2. Relationship Cardinality Signs: 
 
