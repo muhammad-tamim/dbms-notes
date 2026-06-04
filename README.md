@@ -21,16 +21,21 @@
     - [2.1.5. Alternate Key:](#215-alternate-key)
     - [2.1.6. Composite Key (Compound Key):](#216-composite-key-compound-key)
     - [2.1.7. Unique Key:](#217-unique-key)
-- [3. Database Normalization](#3-database-normalization)
-    - [3.0.1. Anomalies:](#301-anomalies)
-    - [3.0.2. Normalization:](#302-normalization)
-      - [3.0.2.1. Functional Dependencies:](#3021-functional-dependencies)
-      - [3.0.2.2. Normal Forms:](#3022-normal-forms)
-      - [3.0.2.3. Example of Normalization:](#3023-example-of-normalization)
-- [4. Entity Relationship Diagram (ERD):](#4-entity-relationship-diagram-erd)
-  - [4.1. Relationship Cardinality:](#41-relationship-cardinality)
-  - [4.2. Relationship Cardinality Signs:](#42-relationship-cardinality-signs)
-  - [4.3. Example:](#43-example)
+- [3. Anomalies:](#3-anomalies)
+- [4. Database Normalization](#4-database-normalization)
+  - [4.1. Normal Forms:](#41-normal-forms)
+    - [4.1.1. 1NF (First Normal Form):](#411-1nf-first-normal-form)
+    - [4.1.2. 2NF (Second Normal Form)](#412-2nf-second-normal-form)
+    - [4.1.3. 3NF (Third Normal Form)](#413-3nf-third-normal-form)
+  - [4.2. Dependency:](#42-dependency)
+    - [4.2.1. Functional Dependency:](#421-functional-dependency)
+    - [4.2.2. Partial Dependency:](#422-partial-dependency)
+    - [4.2.3. Transitive Dependency:](#423-transitive-dependency)
+  - [4.3. Example of Normalization:](#43-example-of-normalization)
+- [5. Entity Relationship Diagram (ERD):](#5-entity-relationship-diagram-erd)
+  - [5.1. Relationship Cardinality:](#51-relationship-cardinality)
+  - [5.2. Relationship Cardinality Signs:](#52-relationship-cardinality-signs)
+  - [5.3. Example:](#53-example)
 
 # 1. Introduction
 
@@ -361,10 +366,16 @@ CREATE TABLE users (
 here email and username are unique keys.
 
 
-# 3. Database Normalization
-
-### 3.0.1. Anomalies:
+# 3. Anomalies:
 Anomalies are data inconsistencies that occur in a database due to poor table design, especially when a table is not properly normalized.
+
+There are three main types of anomalies:
+
+1. Insertion Anomaly: Occurs when inserting one piece of data requires inserting some other unrelated data.
+2. Update Anomaly: Occurs when updating one piece of data requires updating multiple rows of the same data.
+3. Deletion Anomaly: Deletion Anomaly occurs when deleting one data unintentionally deletes others related data.
+
+example: 
 
 | Student_ID | Student_Name | Course_ID | Course_Name | Teacher   |
 | ---------- | ------------ | --------- | ----------- | --------- |
@@ -372,25 +383,10 @@ Anomalies are data inconsistencies that occur in a database due to poor table de
 | 1          | Rahim        | C102      | OS          | Mr. Hasan |
 | 2          | Karim        | C101      | DBMS        | Mr. Karim |
 
-There are three main types of anomalies:
-
-- Insertion Anomaly:
-Insertion Anomaly occurs when you cannot insert data into a table without inserting some other unrelated data.
-
-Problem: 
-You want to add a new Course (C103, Networking, Mr. Alam) but you cannot do that without adding a student.
-
-- Update Anomaly
-Update Anomaly occurs when updating one piece of data requires updating multiple rows, and missing one causes inconsistency.
-
-Problem: 
-Suppose Mr. Karim changes his name to Mr. k. Karim, then you must update every row where Mr. Karim is mentioned. If you miss one, it leads to inconsistency.
-
-- Deletion Anomaly:
-Deletion Anomaly occurs when deleting one record unintentionally deletes important related data.
-
-Problem: 
-Suppose, student Rahim decides to drop 1 course (C101, DBMS). If you delete that row, you also lose all information about the course DBMS and its teacher Mr. Karim if no other student is enrolled in that course.
+here, 
+- Insertion Anomaly: Suppose, If we want to add a new Course like (C103, Networking, Mr. Alam) then we cannot do that without adding a student.
+- Update Anomaly: Suppose, Mr. Karim changes his name to Mr. k. Karim, then we must update every row where Mr. Karim is mentioned. If we miss one, it leads to inconsistency.
+- Deletion Anomaly: Suppose, student Rahim decides to drop 1 course (C101, DBMS). If we delete that row, we also lose all information about the course DBMS and its teacher Mr. Karim if no other student is enrolled in that course.
 
 To resolve these anomalies, we can normalize the database by splitting the table into multiple related tables.
 
@@ -413,45 +409,73 @@ Enrollment Table:
 | 2             | 1          | C102      |
 | 3             | 2          | C101      |
 
-### 3.0.2. Normalization: 
-Normalization is the process of organizing data in a database using normal forms to reduce redundancy and anomalies. Normalization works by splitting large, poorly designed tables into smaller, well-structured tables and defining proper relationships.
 
-#### 3.0.2.1. Functional Dependencies:
-functional dependency is a relationship that exists when one attribute uniquely determines another attribute.
+# 4. Database Normalization
+Normalization is the process of organizing data in a database using normal forms to reduce redundancy(duplicated data) and anomalies. Normalization works by splitting large, poorly designed tables into smaller, well-structured tables and defining proper relationships.
 
-| Student_ID | Student_Name | gender |
-| ---------- | ------------ | ------ |
-| 1          | Rahim        | Male   |
-| 2          | Karim        | Male   |
+## 4.1. Normal Forms:
+Normal Forms are a set of rules used in database normalization to organize data and reduce redundancy (duplicated data), inconsistency, and anomalies.
 
-for example, here if we know the Student_ID, we can uniquely determine the Student_Name and gender. So, we can say that Student_ID functionally determines Student_Name and gender.
-
-But if we know the Student_Name or gender we cannot uniquely determine the Student_ID because multiple students can have the same name and gender.
-
-we can achieve normalization through functional dependencies using the Normal Forms (1NF, 2NF, 3NF etc).
-
-#### 3.0.2.2. Normal Forms:
-Normal forms are a set of rules or guidelines used to evaluate and organize database tables based on functional dependencies.
-
-- 1NF (First Normal Form):
+### 4.1.1. 1NF (First Normal Form):
 A table is in 1NF if: 
-  - Each column must contain atomic (single) values. 
-  - Each row can be uniquely identified by a primary key
+- Each cell must contain atomic (single) values. 
+- Each row can be uniquely identified by a primary key
 
-
-- 2NF (Second Normal Form)
+### 4.1.2. 2NF (Second Normal Form)
 A table is in 2NF if: 
-  - It is already in 1NF
-  - No partial dependency exists 
-    - Partial dependency occurs when a non-key attribute is functionally dependent on a part of a composite key.
+- It is already in 1NF
+- No partial dependency exists 
+  - Partial dependency occurs when a non-key attribute is functionally dependent on a part of a composite key instead of the whole composite key.
  
-- 3NF (Third Normal Form)
+### 4.1.3. 3NF (Third Normal Form)
 A table is in 3NF if: 
-  - It is already in 2NF
-  - No transitive dependency exists
-    - Transitive dependency occurs when a non-key attribute is functionally dependent on another non-key attribute.
+- It is already in 2NF
+- No transitive dependency exists
+  - A Transitive Dependency occurs when a non-key attribute functionally depends on another non-key attribute instead of depending directly on the primary key.
 
-#### 3.0.2.3. Example of Normalization:
+## 4.2. Dependency:
+
+### 4.2.1. Functional Dependency:
+A column B is functionally dependent on column A if each value of A determines exactly one value of B.
+
+| student_id | student_name |
+| ---------- | ------------ |
+| 1          | Tamim        |
+| 2          | John         |
+| 3          | Alice        |
+
+here, student_name is functionally dependent on student_id because each value of student_id determines exactly one value of student_name. So if I know the student_id, I can determine the student_name because: 
+
+```
+1 always means Tamim
+2 always means John
+3 always means Alice
+```
+
+### 4.2.2. Partial Dependency:
+Partial dependency occurs when a non-key attribute is functionally dependent on a part of a composite key instead of the whole composite key.
+
+| student_id | course_id | student_name | course_name |
+| ---------- | --------- | ------------ | ----------- |
+| 1          | C101      | Tamim        | Database    |
+| 2          | C101      | John         | Database    |
+
+
+Suppose the primary key is `(student_id, course_id)`. This is a composite key. Now if we want to determine the student_name, course_name we don't need the full composite key. Because student_id can determine student_name and course_id can determine course_name. So we can say that student_name is partial dependent on student_id and course_name is partial dependent on course_id. 
+
+### 4.2.3. Transitive Dependency:
+A Transitive Dependency occurs when a non-key attribute functionally depends on another non-key attribute instead of depending directly on the primary key.
+
+| employee_id | department_id | department_name |
+| ----------- | ------------- | --------------- |
+| 1           | D1            | Engineering     |
+| 2           | D2            | Marketing       |
+
+
+here, department_name depends on department_id and department_id depends on employee_id. So we can say that employee_id is transitive dependent on department_id and department_id is transitive dependent on department_name.
+
+
+## 4.3. Example of Normalization:
 
 | StudentID | StudentName | CourseID | CourseName | TeacherName  |
 | --------- | ----------- | -------- | ---------- | ------------ |
@@ -522,9 +546,9 @@ Enrollments table:
 | 1         | C2       |
 | 2         | C1       |
 
-# 4. Entity Relationship Diagram (ERD): 
+# 5. Entity Relationship Diagram (ERD): 
 Entity-Relationship Diagram is a visual representation of entities, their attributes, and the relationships between them in a database system.
-## 4.1. Relationship Cardinality:
+## 5.1. Relationship Cardinality:
 Relationship cardinality defines how many instances of one entity can be associated with how many instances of another entity in a database relationship.
 
 Types of Relationship Cardinality: 
@@ -545,12 +569,12 @@ Types of Relationship Cardinality:
   - Many records in Entity A can be related to many records in Entity B.
   - A student can enroll in many courses, and a course can have many students.
 
-## 4.2. Relationship Cardinality Signs: 
+## 5.2. Relationship Cardinality Signs: 
 
 ![alt text](./images/relationship-cardinality-signs.png)
 
 
-## 4.3. Example:
+## 5.3. Example:
 Business idea: EduHub is a global website offering a variety of technology courses across different subjects, allowing students to enroll and learn
 
 Database Design: 
